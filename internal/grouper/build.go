@@ -75,12 +75,13 @@ func setUnimportant(pkg models.PackageVulns, grouped []models.GroupInfo) {
 					grouped[i].ExperimentalAnalysis = make(map[string]models.AnalysisInfo)
 				}
 				// Set unimportant vulns as uncalled
+				called := true
 				grouped[i].ExperimentalAnalysis[vuln.GetId()] = models.AnalysisInfo{
 					Unimportant: true,
 					// TODO(gongh@): Currently, call analysis is not supported for Linux distribution vulnerabilities.
 					// Except explicitly set Called as true to not be counted as uncalled vulnerabilities.
 					// Update this behavior when call analysis for Linux distributions is implemented.
-					Called: true,
+					Called: &called,
 				}
 
 				break
@@ -140,8 +141,9 @@ func setUncalled(pkg models.PackageVulns, grouped []models.GroupInfo) {
 				}
 			}
 
+			called := !isUncalled
 			(*analysis)[vulnID] = models.AnalysisInfo{
-				Called:      !isUncalled,
+				Called:      &called,
 				Unimportant: (*analysis)[vulnID].Unimportant,
 			}
 		}

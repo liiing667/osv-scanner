@@ -12,6 +12,11 @@ import (
 	"google.golang.org/protobuf/types/known/structpb"
 )
 
+var (
+	calledTrue  = true
+	calledFalse = false
+)
+
 func newEcosystemSpecific(t *testing.T, fields map[string]any) *structpb.Struct {
 	t.Helper()
 
@@ -155,7 +160,7 @@ func TestBuild(t *testing.T) {
 					IDs:     []string{"DEBIAN-CVE-2024-0001"},
 					Aliases: []string{"DEBIAN-CVE-2024-0001"},
 					ExperimentalAnalysis: map[string]models.AnalysisInfo{
-						"DEBIAN-CVE-2024-0001": {Called: true, Unimportant: true},
+						"DEBIAN-CVE-2024-0001": {Called: &calledTrue, Unimportant: true},
 					},
 				},
 				{IDs: []string{"DEBIAN-CVE-2024-0002"}, Aliases: []string{"DEBIAN-CVE-2024-0002"}},
@@ -191,7 +196,7 @@ func TestBuild(t *testing.T) {
 					IDs:     []string{"UBUNTU-CVE-2024-0003"},
 					Aliases: []string{"UBUNTU-CVE-2024-0003"},
 					ExperimentalAnalysis: map[string]models.AnalysisInfo{
-						"UBUNTU-CVE-2024-0003": {Called: true, Unimportant: true},
+						"UBUNTU-CVE-2024-0003": {Called: &calledTrue, Unimportant: true},
 					},
 					EcosystemPriority: "negligible",
 				},
@@ -205,7 +210,7 @@ func TestBuild(t *testing.T) {
 					IDs:     []string{"UBUNTU-CVE-2024-0005"},
 					Aliases: []string{"UBUNTU-CVE-2024-0005"},
 					ExperimentalAnalysis: map[string]models.AnalysisInfo{
-						"UBUNTU-CVE-2024-0005": {Called: true, Unimportant: true},
+						"UBUNTU-CVE-2024-0005": {Called: &calledTrue, Unimportant: true},
 					},
 				},
 			},
@@ -261,7 +266,7 @@ func TestBuild(t *testing.T) {
 					IDs:     []string{"OSV-1"},
 					Aliases: []string{"OSV-1"},
 					ExperimentalAnalysis: map[string]models.AnalysisInfo{
-						"OSV-1": {Called: true},
+						"OSV-1": {Called: &calledTrue},
 					},
 				},
 			},
@@ -286,8 +291,8 @@ func TestBuild(t *testing.T) {
 					IDs:     []string{"OSV-1", "GHSA-123"},
 					Aliases: []string{"GHSA-123", "OSV-1"},
 					ExperimentalAnalysis: map[string]models.AnalysisInfo{
-						"OSV-1":    {Called: false},
-						"GHSA-123": {Called: false},
+						"OSV-1":    {Called: &calledFalse},
+						"GHSA-123": {Called: &calledFalse},
 					},
 				},
 			},
@@ -316,7 +321,7 @@ func TestBuild(t *testing.T) {
 					IDs:     []string{"DEBIAN-CVE-2024-0001"},
 					Aliases: []string{"DEBIAN-CVE-2024-0001"},
 					ExperimentalAnalysis: map[string]models.AnalysisInfo{
-						"DEBIAN-CVE-2024-0001": {Called: false, Unimportant: true},
+						"DEBIAN-CVE-2024-0001": {Called: &calledFalse, Unimportant: true},
 					},
 				},
 			},

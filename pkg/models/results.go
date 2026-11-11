@@ -316,7 +316,11 @@ func (groupInfo *GroupInfo) IsCalled() bool {
 	}
 
 	for _, analysis := range groupInfo.ExperimentalAnalysis {
-		if analysis.Called {
+		// A nil Called means the analysis could not determine whether the
+		// vulnerable symbol is reachable (e.g. the advisory has no symbol
+		// information). Treat it as called so a lack of information never
+		// hides a vulnerability as a false negative.
+		if analysis.Called == nil || *analysis.Called {
 			return true
 		}
 	}
@@ -344,8 +348,11 @@ func (groupInfo *GroupInfo) IndexString() string {
 }
 
 type AnalysisInfo struct {
-	Called      bool `json:"called"`
-	Unimportant bool `json:"unimportant"`
+	// Called is nil when analysis could not determine whether the vulnerable
+	// symbol is reachable. JSON omits the field in that case instead of
+	// reporting a misleading "called": false.
+	Called      *bool `json:"called,omitempty"`
+	Unimportant bool  `json:"unimportant"`
 }
 
 type PackageInfo struct {

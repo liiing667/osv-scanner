@@ -15,8 +15,11 @@
         ],
         "aliases": null,
         "experimental_analysis": {
+          "GHSA-c3h9-896r-86jm": {
+            "called": true,
+            "unimportant": false
+          },
           "GO-2021-0053": {
-            "called": false,
             "unimportant": false
           }
         },

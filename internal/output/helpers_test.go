@@ -39,6 +39,11 @@ type outputTestCase struct {
 	args outputTestCaseArgs
 }
 
+var (
+	calledTrue  = true
+	calledFalse = false
+)
+
 type outputTestRunner = func(t *testing.T, args outputTestCaseArgs)
 
 type pkginfo struct {
@@ -493,13 +498,13 @@ func testOutputWithVulnerabilities(t *testing.T, run outputTestRunner) {
 										{
 											IDs: []string{"OSV-1"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"OSV-1": {Called: true},
+												"OSV-1": {Called: &calledTrue},
 											},
 										},
 										{
 											IDs: []string{"GHSA-123"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"GHSA-123": {Called: false},
+												"GHSA-123": {Called: &calledFalse},
 											},
 										},
 									},
@@ -542,13 +547,13 @@ func testOutputWithVulnerabilities(t *testing.T, run outputTestRunner) {
 										{
 											IDs: []string{"OSV-1"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"OSV-1": {Called: true},
+												"OSV-1": {Called: &calledTrue},
 											},
 										},
 										{
 											IDs: []string{"GHSA-123"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"GHSA-123": {Called: false},
+												"GHSA-123": {Called: &calledFalse},
 											},
 										},
 									},
@@ -1313,13 +1318,13 @@ func testOutputWithVulnerabilities(t *testing.T, run outputTestRunner) {
 										{
 											IDs: []string{"OSV-1"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"OSV-1": {Called: false},
+												"OSV-1": {Called: &calledFalse},
 											},
 										},
 										{
 											IDs: []string{"OSV-5"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"OSV-5": {Called: true},
+												"OSV-5": {Called: &calledTrue},
 											},
 										},
 									},
@@ -1384,7 +1389,7 @@ func testOutputWithVulnerabilities(t *testing.T, run outputTestRunner) {
 										{
 											IDs: []string{"OSV-3"},
 											ExperimentalAnalysis: map[string]models.AnalysisInfo{
-												"OSV-3": {Called: true},
+												"OSV-3": {Called: &calledTrue},
 											},
 										},
 									},

@@ -120,7 +120,7 @@ func rustAnalysis(pkgs []models.PackageVulns, source models.SourceInfo) {
 					called, hasFuncInfo := isCalledVulnMap[vulnID]
 					if hasFuncInfo {
 						(*analysis)[vulnID] = models.AnalysisInfo{
-							Called: called,
+							Called: &called,
 						}
 					}
 				}

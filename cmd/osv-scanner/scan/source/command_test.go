@@ -918,7 +918,11 @@ func TestCommand_CallAnalysis(t *testing.T) {
 				"--call-analysis=go",
 				"--config=./testdata/osv-scanner-call-analysis-config.toml",
 				"./testdata/call-analysis-go-project-all-uncalled"},
-			Exit: 0,
+			// govulncheck only reports that the vulnerable package is imported
+			// without tying it to a called symbol, so reachability is unknown.
+			// Unknown must not be treated as uncalled and the vulnerability
+			// stays visible, producing a non-zero exit code.
+			Exit: 1,
 		},
 		{
 			Name: "Run_with_govulncheck_all_uncalled_but_enabled_all-vulns_flag",

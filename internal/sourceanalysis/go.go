@@ -62,13 +62,31 @@ func goAnalysis(pkgs []models.PackageVulns, source models.SourceInfo) {
 }
 
 func matchAnalysisWithPackageVulns(pkgs []models.PackageVulns, idToFindings map[string][]*govulncheck.Finding, vulnsByID map[string]*osvschema.Vulnerability) {
-	idToModuleToCalled := map[string]map[string]bool{}
+	// idToModuleToCalled aggregates the findings per OSV ID and module.
+	// A nil value means none of the findings carry symbol information, so
+	// reachability is unknown; a true value means at least one finding has a
+	// call trace reaching a vulnerable symbol. Every finding for the same OSV
+	// and module must be considered, otherwise a finding without symbol
+	// information (e.g. an alias or version-only record) could overwrite a
+	// finding that proves the vulnerable symbol is called.
+	idToModuleToCalled := map[string]map[string]*bool{}
 	for id, findings := range idToFindings {
-		idToModuleToCalled[id] = map[string]bool{}
+		idToModuleToCalled[id] = map[string]*bool{}
 		for _, f := range findings {
 			modulePath := f.Trace[0].Module
-			called := f.Trace[0].Function != ""
-			idToModuleToCalled[f.OSV][modulePath] = called
+			// Findings with an empty function mean the package is imported but
+			// govulncheck could not tie the finding to a called symbol. Such a
+			// finding must not downgrade an already proven call path.
+			if f.Trace[0].Function == "" {
+				if _, exists := idToModuleToCalled[f.OSV][modulePath]; !exists {
+					idToModuleToCalled[f.OSV][modulePath] = nil
+				}
+
+				continue
+			}
+
+			called := true
+			idToModuleToCalled[f.OSV][modulePath] = &called
 		}
 	}
 
@@ -87,14 +105,19 @@ func matchAnalysisWithPackageVulns(pkgs []models.PackageVulns, idToFindings map[
 					continue
 				}
 
-				pkg := pv.Package
-				if !vulnHasImportsField(vulnsByID[vulnID], &pkg) && moduleToCalled[pv.Package.Name] {
-					// Vuln entry does not have any symbol information, therefore called being true is not useful
+				called, hasFindingsForModule := moduleToCalled[pv.Package.Name]
+				if !hasFindingsForModule {
+					// govulncheck produced no finding for this module, so
+					// reachability is unknown rather than definitely uncalled.
+					(*analysis)[vulnID] = models.AnalysisInfo{}
+
 					continue
 				}
 
+				// When the advisory has no symbol information, a proven call is
+				// still reported, while symbol-less findings stay unknown.
 				(*analysis)[vulnID] = models.AnalysisInfo{
-					Called: moduleToCalled[pv.Package.Name],
+					Called: called,
 				}
 			}
 		}
@@ -130,8 +153,9 @@ func fillNotImportedAnalysisInfo(vulnsByID map[string]*osvschema.Vulnerability, 
 	if vulnHasImportsField(vulnsByID[vulnID], &pv.Package) {
 		// If there is source information, then analysis has been performed, and
 		// code does not import the vulnerable package, so definitely not called
+		called := false
 		(*analysis)[vulnID] = models.AnalysisInfo{
-			Called: false,
+			Called: &called,
 		}
 	}
 }

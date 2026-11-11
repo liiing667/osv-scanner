@@ -2385,12 +2385,14 @@ Scanned <rootdir>/testdata/call-analysis-go-project/go.mod file and found 4 pack
 Package Go/stdlib/1.19.99 has been filtered out because: Just want to test actual packages
 Filtered 1 ignored package/s from the scan.
 
-Total 1 package affected by 1 known vulnerability (0 Critical, 0 High, 1 Medium, 0 Low, 0 Unknown) from 1 ecosystem.
-1 vulnerability can be fixed.
+Total 2 packages affected by 2 known vulnerabilities (0 Critical, 1 High, 1 Medium, 0 Low, 0 Unknown) from 1 ecosystem.
+2 vulnerabilities can be fixed.
 
 +-------------------------------------+------+-----------+-----------------------------+---------+---------------+------------------------------------------+
 | OSV URL                             | CVSS | ECOSYSTEM | PACKAGE                     | VERSION | FIXED VERSION | SOURCE                                   |
 +-------------------------------------+------+-----------+-----------------------------+---------+---------------+------------------------------------------+
+| https://osv.dev/GO-2021-0053        | 8.6  | Go        | github.com/gogo/protobuf    | 1.3.1   | 1.3.2         | testdata/call-analysis-go-project/go.mod |
+| https://osv.dev/GHSA-c3h9-896r-86jm |      |           |                             |         |               |                                          |
 | https://osv.dev/GO-2023-1558        | 5.9  | Go        | github.com/ipfs/go-bitfield | 1.0.0   | 1.1.0         | testdata/call-analysis-go-project/go.mod |
 | https://osv.dev/GHSA-2h6c-j3gf-xp9r |      |           |                             |         |               |                                          |
 +-------------------------------------+------+-----------+-----------------------------+---------+---------------+------------------------------------------+
@@ -2407,9 +2409,15 @@ Scanned <rootdir>/testdata/call-analysis-go-project-all-uncalled/go.mod file and
 Package Go/stdlib/1.19.99 has been filtered out because: Just want to test actual packages
 Filtered 1 ignored package/s from the scan.
 
-Total 0 packages affected by 0 known vulnerabilities (0 Critical, 0 High, 0 Medium, 0 Low, 0 Unknown) from 1 ecosystem.
-0 vulnerabilities can be fixed.
+Total 1 package affected by 1 known vulnerability (0 Critical, 1 High, 0 Medium, 0 Low, 0 Unknown) from 1 ecosystem.
+1 vulnerability can be fixed.
 
++-------------------------------------+------+-----------+--------------------------+---------+---------------+-------------------------------------------------------+
+| OSV URL                             | CVSS | ECOSYSTEM | PACKAGE                  | VERSION | FIXED VERSION | SOURCE                                                |
++-------------------------------------+------+-----------+--------------------------+---------+---------------+-------------------------------------------------------+
+| https://osv.dev/GO-2021-0053        | 8.6  | Go        | github.com/gogo/protobuf | 1.3.1   | 1.3.2         | testdata/call-analysis-go-project-all-uncalled/go.mod |
+| https://osv.dev/GHSA-c3h9-896r-86jm |      |           |                          |         |               |                                                       |
++-------------------------------------+------+-----------+--------------------------+---------+---------------+-------------------------------------------------------+
 
 ---
 
@@ -2423,13 +2431,11 @@ Scanned <rootdir>/testdata/call-analysis-go-project-all-uncalled/go.mod file and
 Package Go/stdlib/1.19.99 has been filtered out because: Just want to test actual packages
 Filtered 1 ignored package/s from the scan.
 
-Total 0 packages affected by 0 known vulnerabilities (0 Critical, 0 High, 0 Medium, 0 Low, 0 Unknown) from 1 ecosystem.
-0 vulnerabilities can be fixed.
+Total 1 package affected by 1 known vulnerability (0 Critical, 1 High, 0 Medium, 0 Low, 0 Unknown) from 1 ecosystem.
+1 vulnerability can be fixed.
 
 +-------------------------------------+------+-----------+--------------------------+---------+---------------+-------------------------------------------------------+
 | OSV URL                             | CVSS | ECOSYSTEM | PACKAGE                  | VERSION | FIXED VERSION | SOURCE                                                |
-+-------------------------------------+------+-----------+--------------------------+---------+---------------+-------------------------------------------------------+
-| Uncalled vulnerabilities            |      |           |                          |         |               |                                                       |
 +-------------------------------------+------+-----------+--------------------------+---------+---------------+-------------------------------------------------------+
 | https://osv.dev/GO-2021-0053        | 8.6  | Go        | github.com/gogo/protobuf | 1.3.1   | 1.3.2         | testdata/call-analysis-go-project-all-uncalled/go.mod |
 | https://osv.dev/GHSA-c3h9-896r-86jm |      |           |                          |         |               |                                                       |
